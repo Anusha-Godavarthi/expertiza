@@ -371,5 +371,4 @@ class ResponseController < ApplicationController
     end
   end
 end
-#testing 
-#test commit comment
+#new commit
