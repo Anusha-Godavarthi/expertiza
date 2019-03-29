@@ -54,6 +54,7 @@ class ResponseController < ApplicationController
   # Determining the current phase and check if a review is already existing for this stage.
   # If so, edit that version otherwise create a new version.
 
+  # -> E1907 Moved the assign_instance_vars for the Edit action to the edit method.
   # Prepare the parameters when student clicks "Edit"
   def edit
     # instance variables for Edit action
@@ -102,6 +103,7 @@ class ResponseController < ApplicationController
                 return: params[:return], msg: msg, review: params[:review], save_options: params[:save_options]
   end
 
+  # -> E1907.  Moved assign_instance_vars for the New action inside the new method.
   def new
     # instance variable for New action
     @header = 'New'
@@ -148,6 +150,7 @@ class ResponseController < ApplicationController
     set_content
   end
 
+  # -> E1907 Removed was_submitted.  Changed to previously_submitted
   def create
     # TO DO: Need to revise the map_id variable as it does not make sense.
     map_id = params[:id]
@@ -180,7 +183,7 @@ class ResponseController < ApplicationController
     create_answers(params, questions) if params[:responses]
     msg = "Your response was successfully saved."
     error_msg = ""
-    # only notify if is_submitted changes from false to true,
+    # only notify if is_submitted changes from false to true
     if (@map.is_a? ReviewResponseMap) && (previously_submitted == false && @response.is_submitted) && @response.significant_difference?
       @response.notify_instructor_on_difference
       @response.email
@@ -298,7 +301,7 @@ class ResponseController < ApplicationController
     @max = @questionnaire.max_question_score
   end
 
-  # E1907, removed assign_instance_vars section as it was not needed, combined in Edit and New sections
+  # -> E1907, removed assign_instance_vars section as it was not needed, combined in Edit and New sections
 
   def set_questionnaire_for_new_response
     case @map.type
